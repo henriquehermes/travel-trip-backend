@@ -23,7 +23,7 @@ export class CreateAmenityController {
 }
 
 export class GetAllAmenityController {
-	async handle({ response }: { response: Response }) {
+	async handle(request: Request, response: Response) {
 		const service = new GetAllAmenityService()
 
 		const result = await service.execute()

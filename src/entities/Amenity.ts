@@ -3,10 +3,10 @@ import { v4 as uuid } from "uuid"
 
 @Entity("amenities")
 export class Amenity {
-	@PrimaryColumn()
+	@PrimaryColumn({ type: "varchar" })
 	id: string
 
-	@Column()
+	@Column({ type: "varchar" })
 	name: string
 
 	constructor() {

@@ -1,35 +1,48 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm"
+import {
+	Entity,
+	Column,
+	PrimaryColumn,
+	ManyToOne,
+	JoinColumn,
+	CreateDateColumn,
+} from "typeorm"
 import { v4 as uuid } from "uuid"
 import { User } from "./User"
 
 @Entity("markers")
 export class Marker {
-	@PrimaryColumn()
+	@PrimaryColumn({ type: "varchar" })
 	id: string
 
-	@Column()
+	@Column({ type: "varchar" })
 	type: string
 
-	@Column()
-	amenities: string
+	@Column({
+		type: "varchar", // or you can use 'varchar' depending on your needs
+		array: true, // this specifies that the column should accept an array of strings
+	})
+	amenities: string[]
 
-	@Column()
+	@Column({ type: "varchar" })
 	pin_color: string
 
-	@Column()
+	@Column({ type: "text" })
 	description: string
 
-	@Column()
+	@Column({ type: "boolean" })
 	favorite: boolean
 
-	@Column()
+	@Column({ type: "numeric" })
 	latitude: number
 
-	@Column()
+	@Column({ type: "numeric" })
 	longitude: number
 
-	@Column()
+	@Column({ type: "varchar" })
 	user_id: string
+
+	@CreateDateColumn()
+	created_at: Date
 
 	@ManyToOne(() => User)
 	@JoinColumn({ name: "user_id" })

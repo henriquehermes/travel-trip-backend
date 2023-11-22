@@ -44,6 +44,11 @@ export class CreateMarker1700575226752 implements MigrationInterface {
 						name: "user_id",
 						type: "uuid",
 					},
+					{
+						name: "created_at",
+						type: "timestamp",
+						default: "now()",
+					},
 				],
 				foreignKeys: [
 					{

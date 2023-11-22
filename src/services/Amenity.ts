@@ -56,7 +56,7 @@ export class UpdateAmenityService {
 			return new Error("Amenity not found")
 		}
 
-		amenity.name = name ? name : amenity.name
+		amenity.name = name ?? amenity.name
 
 		await AmenityRepository.save(amenity)
 
