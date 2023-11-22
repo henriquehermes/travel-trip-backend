@@ -27,6 +27,7 @@ export class CreateMarker1700575226752 implements MigrationInterface {
 					{
 						name: "notes",
 						type: "text",
+						isNullable: true,
 					},
 					{
 						name: "favorite",

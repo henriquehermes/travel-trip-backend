@@ -1,5 +1,6 @@
 import { Marker } from "../entities/Marker"
 import { IMarker } from "../interfaces/MarkerInterfaces"
+import { AmenityRepository } from "../repositories/AmenityRepository"
 import { MarkerRepository } from "../repositories/MarkerRepository"
 import { UserRepository } from "../repositories/UserRepository"
 
@@ -27,6 +28,26 @@ export class CreateMarkerService {
 export class GetAllMarkerService {
 	async execute(): Promise<Marker[] | Error> {
 		const markers = await MarkerRepository.find()
+
+		if (markers.length > 0) {
+			await Promise.all(
+				markers.map(async (marker) => {
+					// Fetch amenities for each marker asynchronously
+					// @ts-ignore
+					marker.amenities = await Promise.all(
+						marker.amenities.map(async (amenityId) => {
+							const amenityResult = await AmenityRepository.findOneBy({
+								id: amenityId,
+							})
+
+							return amenityResult || ""
+						})
+					)
+
+					console.log("with amenities", marker.amenities)
+				})
+			)
+		}
 
 		return markers
 	}
