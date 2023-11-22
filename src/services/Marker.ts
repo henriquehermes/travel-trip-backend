@@ -43,8 +43,6 @@ export class GetAllMarkerService {
 							return amenityResult || ""
 						})
 					)
-
-					console.log("with amenities", marker.amenities)
 				})
 			)
 		}
@@ -58,6 +56,17 @@ export class GetMarkerByIdService {
 		const marker = await MarkerRepository.findOneBy({ id })
 
 		if (!marker) return new Error("Marker not found")
+
+		// @ts-ignore
+		marker.amenities = await Promise.all(
+			marker.amenities.map(async (amenityId) => {
+				const amenityResult = await AmenityRepository.findOneBy({
+					id: amenityId,
+				})
+
+				return amenityResult || ""
+			})
+		)
 
 		return marker
 	}
