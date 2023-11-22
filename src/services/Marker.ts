@@ -66,7 +66,7 @@ export class UpdateMarkerService {
 
 		marker.latitude = markerData.latitude ?? marker.latitude
 		marker.longitude = markerData.longitude ?? marker.longitude
-		marker.description = markerData.description ?? marker.description
+		marker.notes = markerData.notes ?? marker.notes
 		marker.favorite = markerData.favorite ?? marker.favorite
 		marker.pin_color = markerData.pin_color ?? marker.pin_color
 		marker.type = markerData.type ?? marker.type

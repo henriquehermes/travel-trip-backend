@@ -27,7 +27,7 @@ export class Marker {
 	pin_color: string
 
 	@Column({ type: "text" })
-	description: string
+	notes: string
 
 	@Column({ type: "boolean" })
 	favorite: boolean

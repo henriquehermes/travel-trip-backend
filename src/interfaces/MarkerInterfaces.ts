@@ -3,7 +3,7 @@ export interface IMarker {
 	type: string
 	amenities: string[]
 	pin_color: string
-	description: string
+	notes: string
 	favorite: boolean
 	latitude: number
 	longitude: number

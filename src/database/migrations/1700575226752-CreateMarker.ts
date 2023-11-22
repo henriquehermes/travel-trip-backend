@@ -25,7 +25,7 @@ export class CreateMarker1700575226752 implements MigrationInterface {
 						type: "varchar",
 					},
 					{
-						name: "description",
+						name: "notes",
 						type: "text",
 					},
 					{

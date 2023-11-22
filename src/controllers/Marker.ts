@@ -74,7 +74,7 @@ export class UpdateMarkerController {
 		const { id } = request.params
 		const {
 			amenities,
-			description,
+			notes,
 			favorite,
 			latitude,
 			longitude,
@@ -89,7 +89,7 @@ export class UpdateMarkerController {
 		const result = await service.execute({
 			id,
 			amenities,
-			description,
+			notes,
 			favorite,
 			latitude,
 			longitude,
