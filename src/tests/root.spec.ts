@@ -1,5 +1,5 @@
 import supertest from "supertest"
-import app from "../app"
+import app from "../old_app"
 
 describe("root endpoint get and post", () => {
 	test("get to / returns 200 and data", async () => {

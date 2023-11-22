@@ -6,9 +6,9 @@ import morgan from "morgan"
 import passport from "passport"
 import { jwtStrategy } from "./configs/passport.js"
 
-import errorHandler from "./middleware/errorHandler"
-import fourOhFour from "./middleware/fourOhFour"
-import root from "./routes/root"
+import errorHandler from "./middleware/errorHandler.js"
+import fourOhFour from "./middleware/fourOhFour.js"
+import root from "./routes/root.js"
 
 const app = express()
 
