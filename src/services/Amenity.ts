@@ -13,7 +13,7 @@ export class CreateAmenityService {
 		}
 
 		if (!name) {
-			throw new Error("Name is required")
+			return new Error("Name is required")
 		}
 
 		const Amenity = AmenityRepository.create({

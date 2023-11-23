@@ -9,6 +9,8 @@ import { InsertAmenities1700647678658 } from "./migrations/1700647678658-InsertA
 import { Amenity } from "../entities/Amenity"
 import { Marker } from "../entities/Marker"
 import { User } from "../entities/User"
+import { CreateTokenTable1700706858599 } from "./migrations/1700706858599-CreateTokenTable"
+import { RefreshToken } from "../entities/RefreshToken"
 
 const PORT = process.env.DB_PORT as number | undefined
 
@@ -21,11 +23,12 @@ export const AppDataSource = new DataSource({
 	database: process.env.DB_NAME,
 	synchronize: false, // DEV_ONLY
 	logging: true,
-	entities: [Amenity, Marker, User],
+	entities: [Amenity, Marker, User, RefreshToken],
 	migrations: [
 		CreateUser1700575212608,
 		CreateAmenity1700554817235,
 		CreateMarker1700575226752,
 		InsertAmenities1700647678658,
+		CreateTokenTable1700706858599,
 	],
 })

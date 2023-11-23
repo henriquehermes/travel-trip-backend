@@ -1,5 +1,9 @@
 import { Request, Response } from "express"
-import { CreateUserService, UpdateUserService } from "../services/User"
+import {
+	AuthenticateUserService,
+	CreateUserService,
+	UpdateUserService,
+} from "../services/User"
 
 export class CreateUserController {
 	async handle(request: Request, response: Response) {
@@ -30,6 +34,22 @@ export class UpdateUserController {
 		const service = new UpdateUserService()
 
 		const result = await service.execute({ id, first_name, last_name, email })
+
+		if (result instanceof Error) {
+			return response.status(400).json({ error: result.message })
+		}
+
+		return response.status(201).json(result)
+	}
+}
+
+export class AuthenticateUserController {
+	async handle(request: Request, response: Response) {
+		const { email, password } = request.body
+
+		const service = new AuthenticateUserService()
+
+		const result = await service.execute({ email, password })
 
 		if (result instanceof Error) {
 			return response.status(400).json({ error: result.message })

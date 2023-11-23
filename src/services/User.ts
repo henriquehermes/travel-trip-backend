@@ -1,6 +1,9 @@
 import { User } from "../entities/User"
+import { IRefreshToken } from "../interfaces/TokenInterfaces"
 import { IUser } from "../interfaces/UserInterfaces"
 import { UserRepository } from "../repositories/UserRepository"
+import bcrypt from "bcrypt"
+import { GenerateRefreshTokenService, GenerateTokenService } from "./Token"
 
 export class CreateUserService {
 	async execute({
@@ -16,17 +19,22 @@ export class CreateUserService {
 		}
 
 		if (!email) {
-			throw new Error("Email is required")
+			return new Error("Email is required")
 		}
+
+		const encrypted = await bcrypt.hash(password, 10)
 
 		const User = UserRepository.create({
 			email,
 			first_name,
 			last_name,
-			password,
+			password: encrypted,
 		})
 
 		await UserRepository.save(User)
+
+		//@ts-ignore
+		delete User.password
 
 		return User
 	}
@@ -52,6 +60,39 @@ export class UpdateUserService {
 
 		await UserRepository.save(user)
 
+		//@ts-ignore
+		delete user.password
+
 		return user
+	}
+}
+
+export class AuthenticateUserService {
+	async execute({
+		email,
+		password,
+	}: Pick<IUser, "password" | "email">): Promise<
+		Partial<IUser & { token: string; refreshToken: IRefreshToken }> | Error
+	> {
+		const user = await UserRepository.findOneBy({ email })
+		if (!user) {
+			return new Error("User or Password is incorrect")
+		}
+
+		const passwordMatch = await bcrypt.compare(password, user.password)
+		if (!passwordMatch) {
+			return new Error("User or Password is incorrect")
+		}
+
+		const generateToken = new GenerateTokenService()
+		const token = await generateToken.execute(user.id)
+
+		const generateRefreshToken = new GenerateRefreshTokenService()
+		const refreshToken = await generateRefreshToken.execute(user.id)
+
+		//@ts-ignore
+		delete user["password"]
+
+		return { ...user, token, refreshToken }
 	}
 }
