@@ -1,9 +1,10 @@
 import { Request, Response } from "express"
 import {
-	AuthenticateUserService,
+	LoginUserService,
 	CreateUserService,
 	GetUserService,
 	UpdateUserService,
+	LogoutUserService,
 } from "../services/User"
 
 export class CreateUserController {
@@ -44,11 +45,11 @@ export class UpdateUserController {
 	}
 }
 
-export class AuthenticateUserController {
+export class LoginUserController {
 	async handle(request: Request, response: Response) {
 		const { email, password } = request.body
 
-		const service = new AuthenticateUserService()
+		const service = new LoginUserService()
 
 		const result = await service.execute({ email, password })
 
@@ -79,5 +80,26 @@ export class GetUserController {
 		}
 
 		return response.status(201).json(result)
+	}
+}
+
+export class LogoutUserController {
+	async handle(request: Request, response: Response) {
+		const tokenHeader = request.headers.authorization
+
+		if (!tokenHeader) {
+			return response.status(400).json({ error: "Token not provided" })
+		}
+		const [, token] = tokenHeader.split(" ")
+
+		const service = new LogoutUserService()
+
+		const result = await service.execute({ token })
+
+		if (result instanceof Error) {
+			return response.status(400).json({ error: result.message })
+		}
+
+		return response.status(201).end()
 	}
 }

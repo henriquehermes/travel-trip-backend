@@ -24,10 +24,10 @@ export class User {
 	role: string
 
 	@Column({ type: "varchar" })
-	refresh_token: string
+	refresh_token: string | null
 
 	@Column({ type: "varchar" })
-	token: string
+	token: string | null
 
 	@CreateDateColumn()
 	created_at: Date

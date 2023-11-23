@@ -4,6 +4,7 @@ import { IUser } from "../interfaces/UserInterfaces"
 import { UserRepository } from "../repositories/UserRepository"
 import bcrypt from "bcrypt"
 import { GenerateRefreshTokenService, GenerateTokenService } from "./Token"
+import { RefreshTokenRepository } from "../repositories/RefreshTokenRepository"
 
 export class CreateUserService {
 	async execute({
@@ -68,7 +69,7 @@ export class UpdateUserService {
 	}
 }
 
-export class AuthenticateUserService {
+export class LoginUserService {
 	async execute({
 		email,
 		password,
@@ -109,5 +110,26 @@ export class GetUserService {
 		delete user["password"]
 
 		return user
+	}
+}
+
+export class LogoutUserService {
+	async execute({ token }: { token: string }): Promise<boolean | Error> {
+		const user = await UserRepository.findOneBy({ token })
+
+		if (!user) {
+			return new Error("User not found")
+		}
+
+		user.token = null
+		user.refresh_token = null
+
+		await RefreshTokenRepository.delete({
+			user_id: user.id,
+		})
+
+		await UserRepository.save(user)
+
+		return true
 	}
 }
