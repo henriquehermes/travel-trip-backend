@@ -57,6 +57,7 @@ export class UpdateUserService {
 		user.email = email ?? user.email
 		user.first_name = first_name ?? user.first_name
 		user.last_name = last_name ?? user.last_name
+		user.role = "1"
 
 		await UserRepository.save(user)
 
@@ -98,11 +99,7 @@ export class AuthenticateUserService {
 }
 
 export class GetUserService {
-	async execute({
-		token,
-	}: {
-		token: string
-	}): Promise<Partial<IUser> | Error> {
+	async execute({ token }: { token: string }): Promise<IUser | Error> {
 		const user = await UserRepository.findOneBy({ token })
 		if (!user) {
 			return new Error("User not found")

@@ -18,7 +18,7 @@ import {
 	GetUserController,
 	UpdateUserController,
 } from "./controllers/User"
-import { authentication } from "./middleware/authentication"
+import { authentication, isAdmin } from "./middleware/authentication"
 import { RefreshTokenController } from "./controllers/RefreshToken"
 
 export const routes = Router()
@@ -27,16 +27,19 @@ export const routes = Router()
 routes.post(
 	"/v1/admin/amenity",
 	authentication,
+	isAdmin(),
 	new CreateAmenityController().handle
 )
 routes.delete(
 	"/v1/admin/amenity/:id",
 	authentication,
+	isAdmin(),
 	new DeleteAmenityController().handle
 )
 routes.put(
 	"/v1/admin/amenity/:id",
 	authentication,
+	isAdmin(),
 	new UpdateAmenityController().handle
 )
 
