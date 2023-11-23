@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import {
 	AuthenticateUserService,
 	CreateUserService,
+	GetUserService,
 	UpdateUserService,
 } from "../services/User"
 
@@ -50,6 +51,28 @@ export class AuthenticateUserController {
 		const service = new AuthenticateUserService()
 
 		const result = await service.execute({ email, password })
+
+		if (result instanceof Error) {
+			return response.status(400).json({ error: result.message })
+		}
+
+		return response.status(201).json(result)
+	}
+}
+
+export class GetUserController {
+	async handle(request: Request, response: Response) {
+		const tokenHeader = request.headers.authorization
+
+		if (!tokenHeader) {
+			return response.status(400).json({ error: "Token not provided" })
+		}
+
+		const [, token] = tokenHeader.split(" ")
+
+		const service = new GetUserService()
+
+		const result = await service.execute({ token: token ?? "" })
 
 		if (result instanceof Error) {
 			return response.status(400).json({ error: result.message })

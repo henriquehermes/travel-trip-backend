@@ -18,6 +18,17 @@ export class User {
 	@Column({ type: "varchar" })
 	password: string
 
+	// 1 - User
+	// 2 - Admin
+	@Column({ type: "varchar", default: 1 })
+	role: string
+
+	@Column({ type: "varchar" })
+	refresh_token: string
+
+	@Column({ type: "varchar" })
+	token: string
+
 	@CreateDateColumn()
 	created_at: Date
 

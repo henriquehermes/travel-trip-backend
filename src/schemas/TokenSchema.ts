@@ -1,7 +1,7 @@
 import Joi from "joi"
 
-const refreshTokenSchema = Joi.string().guid({
+const tokenSchema = Joi.string().guid({
 	version: ["uuidv4"],
 })
 
-export { refreshTokenSchema }
+export { tokenSchema }

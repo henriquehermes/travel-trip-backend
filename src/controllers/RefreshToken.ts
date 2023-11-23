@@ -1,14 +1,12 @@
 import { Request, Response } from "express"
 import { RefreshTokenService } from "../services/Token"
-import { refreshTokenSchema } from "../schemas/TokenSchema"
+import { tokenSchema } from "../schemas/TokenSchema"
 
 export class RefreshTokenController {
 	async handle(request: Request, response: Response) {
 		const { refreshToken } = request.body
 
-		const { error } = refreshTokenSchema.validate(refreshToken)
-
-		console.log(error)
+		const { error } = tokenSchema.validate(refreshToken)
 
 		if (error) {
 			return response.status(400).json({ error: "Invalid property value" })

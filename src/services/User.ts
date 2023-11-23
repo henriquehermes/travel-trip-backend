@@ -96,3 +96,21 @@ export class AuthenticateUserService {
 		return { ...user, token, refreshToken }
 	}
 }
+
+export class GetUserService {
+	async execute({
+		token,
+	}: {
+		token: string
+	}): Promise<Partial<IUser> | Error> {
+		const user = await UserRepository.findOneBy({ token })
+		if (!user) {
+			return new Error("User not found")
+		}
+
+		//@ts-ignore
+		delete user["password"]
+
+		return user
+	}
+}

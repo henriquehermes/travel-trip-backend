@@ -1,6 +1,7 @@
 import dayjs from "dayjs"
 import { RefreshTokenRepository } from "../repositories/RefreshTokenRepository"
 import { sign } from "jsonwebtoken"
+import { UserRepository } from "../repositories/UserRepository"
 
 class GenerateTokenService {
 	async execute(userId: string) {
@@ -8,6 +9,8 @@ class GenerateTokenService {
 			subject: userId,
 			expiresIn: "180 days",
 		})
+
+		await UserRepository.update({ id: userId }, { token })
 
 		return token
 	}
@@ -25,6 +28,11 @@ class GenerateRefreshTokenService {
 			expiresIn,
 			user_id: userId,
 		})
+
+		await UserRepository.update(
+			{ id: userId },
+			{ refresh_token: generateRefreshToken.id }
+		)
 
 		await RefreshTokenRepository.save(generateRefreshToken)
 

@@ -5,4 +5,5 @@ export interface IUser {
 	last_name: string
 	password: string
 	created_at: Date
+	role: string
 }
